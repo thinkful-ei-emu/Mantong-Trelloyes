@@ -38,3 +38,5 @@ const STORE = {
     },
   }
   export default STORE;
+
+  //store changes
