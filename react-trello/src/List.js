@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card'
+import Card from './Card';
 import './List.css';
 
 export default function List(props) {
@@ -14,8 +14,10 @@ export default function List(props) {
             key={card.id}
             title={card.title}
             content={card.content}
+            onDeleteCard={props.onDeleteCard}
           />
         )}
+        
         <button
           type='button'
           className='List-add-button'
@@ -24,5 +26,6 @@ export default function List(props) {
         </button>
       </div>
     </section>
+   
   )
 }
