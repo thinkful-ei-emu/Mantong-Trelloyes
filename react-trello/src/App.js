@@ -24,6 +24,7 @@ class App extends Component {
               header={list.header}
               cards={list.cardIds.map(id => store.allCards[id])}
             />
+            
           ))}
         </div>
       </main>
