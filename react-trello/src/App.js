@@ -19,49 +19,62 @@ function omit(obj, keyToOmit) {
     {}
   );
 }
-class App extends Component {
+export default class App extends Component {
 
   state ={
     store: STORE,
   };
   
-  handleDeleteCard =(card) =>{
+  handleDeleteCard =(cardId) =>{
     
-    const newList = this.state.store.lists.map(list =>({
+    const {lists,allCards} =this.state.store;
+    const newLists = lists.map(list =>({
       ...list,
-      card:list.card.filter(id => id !== card)
-    }
+      cardIds: list.cardIds.filter(id => id !== cardId)
+    }));
 
-    )
-      
-      
-      );
-    const newCards=omit(card,'id');
+    const newCards=omit(allCards,cardId);
+    
     this.setState({
       store:{
-        List:newList,
+        lists:newLists,
         allCards:newCards
       }
       
     })
 
   } 
-  // handleAddCard =(cardId) =>{
-  //  const newCards = newRandomCard
-  //  this.setState({
-  //    stor:{
-  //      List:newList,
-  //      allCards:newCards
-  //    }
-  //  }
+  handleAddCard =(listId) =>{
+    
+    const newCard = newRandomCard();
+    const newLists = this.state.store.lists.map(list => {
+    if (list.id === listId) {
+      return {
+              ...list,
+              cardIds: [...list.cardIds, newCard.id]
+            };
+          }
+          return list;
+        })
+    
+   this.setState({
+     store:{
+       lists:newLists,
+       allCards:{
+        ...this.state.store.allCards,
+        [newCard.id]: newCard
+      }
+     }
+   }
 
-  //  )
+   )}
 
 
 
   // }
   render() {
-    const { store } = this.props
+    const { store } = this.state
+    console.log(store.lists)
     return (
       <main className='App'>
         <header className='App-header'>
@@ -78,20 +91,22 @@ class App extends Component {
           ))}
         </div> */}
         <section>
+          {store.lists.map(lists =>(
           <List 
           
-            key={this.state.store.lists.id}
-            header={this.state.store.lists.header}
-            cards={this.state.store.lists.cardIds.map(id => store.allCards[id])}
+            key={lists.id}
+            id={lists.id}
+            header={lists.header}
+            cards={lists.cardIds.map(id => store.allCards[id])}
             /*add callback props here*/
             onDeleteCard={this.handleDeleteCard}
             onAddCard={this.handleAddCard}
           />
+          ))}
         </section>
-  
+    
       </main>
     );
   }
 }
 
-export default App;
